@@ -14,14 +14,8 @@ cont navgtrLinks = [
     path:'/doctors',
     display:'Doctors'
   },
-  {
-    path:'/home',
-    display:'Home'
-  },
-  {
-    path:'/home',
-    display:'Home'
-  },
+
+  
 ]
 
 const Header = () => {
