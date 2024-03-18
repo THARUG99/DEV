@@ -33,6 +33,9 @@
     .hero__section{
         @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
     }
+    .body__sec{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
 }
 
 
