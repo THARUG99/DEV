@@ -3,9 +3,14 @@ import heroimg1 from '../assets/images/heroimg1.png'
 import vec1 from '../assets/images/vec1.png'
 import vec2 from '../assets/images/vec2.png'
 import vec3 from '../assets/images/vec3.png'
+import feaimg from '../assets/images/feaimg.png'
+
 
 import { Link } from 'react-router-dom'
 import { BsArrowRight } from 'react-icons/bs'
+import About from '../components/About/About'
+import ServiceList from '../components/Services/ServiceList'
+import DoctorList from '../components/Doctors/DoctorList'
 
 const Home = () => {
   return <> 
@@ -135,6 +140,90 @@ const Home = () => {
     </div>
   </section>
 
+{/* ---------------About Sec Start---------------------------*/}
+<About />
+{/* ---------------About Sec End---------------------------*/}
+
+{/*--------------------Services---------------------------- */}
+  <section className='serve'>
+    <div className="container">
+      <div className="xl:w-[470px] mx-auto ">
+        <h2 className='heading text-center'>Our Services </h2>
+        <p className='text__para text-center'>
+          World-class care for everyone. Our health system offers unmatched,
+          expert health care.
+        </p>
+      </div>
+
+      <ServiceList/>
+    </div>
+  </section>
+{/*--------------------Services End---------------------------- */}
+
+{/*--------------------Features---------------------------- */}
+<section className='features'>
+  <div className="container">
+    <div className="flex items-center justify-between lg:flex-row ">
+
+     {/*----------Content----------*/}
+     <div className="xl:w-[670px] ">
+       <h2 className='heading'>
+          Get Virtual Treatment <br /> Anytime
+       </h2>
+       <ul className="pl-4">
+        <li className="text__para">
+          1. Schedule appointments directly
+        </li>
+        <li className="text__para">
+          2. Search your physician here
+        </li>
+        <li className="text__para">
+          3.Use our online scheduling to select an appointment time
+        </li>
+       </ul>
+       <Link to='/'><button className='btn'>Learn More</button></Link>
+     </div>
+     {/*----------image----------*/}
+     <div className='relative z-10 xl:w-[770px] flex justify-end mt-[50px] lg:mt-0'>
+      <img src={feaimg} className='w-3/4' alt="" />
+
+      {/*<div className='w-[150px] lg:w-[248px] bg-white absolute bottom-[50px] left-0 md:bottom-[100px]
+      md:left-5 z-20 p-2 pb-3 lg:px-4 lg:pt-4 lg:pb-[26px] rounded-[10px] '>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-[6px] lg:gap-3 ">
+            <p className='text-[10px] leading-[10px] lg:text-[14px] lg:leading-5 text-headingColor font-[600]'> Tue, 24</p>
+            <p className='text-[10px] leading-[10px] lg:text-[14px] lg:leading-5 text-textColor font-[6400]'> 10:00 AM</p>
+          </div>
+          <span className="w-5 h-5 lg:w-[34px] lg:h-[34px] flex items-center justify-center bg-yellowColor rounded py-1 px-[6px] lg:py-3 lg:px-[9px]">
+            <img src={vidimg} alt="" />
+          </span>
+        </div>
+            </div> */}
+     </div>
+    </div>
+  </div>  
+</section>
+{/*--------------------Features End---------------------------- */}
+
+{/*--------------------Doctors---------------------------- */}
+  <section className='doctors'>
+    <div className="container">
+      <div className="xl:w-[470px] mx-auto ">
+        <h2 className='heading text-center'>Our Best Doctors </h2>
+        <p className='text__para text-center'>
+          World-class care for everyone. Our health system offers unmatched,
+          expert health care.
+        </p>
+      </div>
+
+      <DoctorList/>
+    </div>
+  </section>
+  {/*--------------------Doctors End---------------------------- */}
+
+  {/*--------------------Faq---------------------------- */}
+
+  {/*--------------------Faq End---------------------------- */}
   </>
   
 };

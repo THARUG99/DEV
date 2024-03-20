@@ -5,6 +5,7 @@ import Doctors from '../pages/Doctors/Doctors'
 import DoctorDetails from '../pages/Doctors/DoctorDetails'
 import Patients from '../pages/Patients/Patients'
 import HealthRecords from '../pages/Patients/HealthRecords' 
+import Services from '../pages/Services';
 
 import {Routes, Route} from 'react-router-dom'
 
@@ -20,6 +21,7 @@ const Routers = () => {
         <Route path="/register" element={<Signup/>}/>
         <Route path="/patients" element={<Patients/>}/>
         <Route path="/healthrecords" element={<HealthRecords/>}/>
+        <Route path="/services" element={<Services/>}/>
         
     </Routes>
   )

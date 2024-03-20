@@ -36,6 +36,18 @@
     .body__sec{
         @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
     }
+    .about__section{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
+    .serve{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
+    .features{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
+    .doctors{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
 }
 
 

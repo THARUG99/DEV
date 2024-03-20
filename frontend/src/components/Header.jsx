@@ -1,5 +1,5 @@
 import {useEffect,useRef} from 'react'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/images/logo1.png'
 import avatar from '../assets/images/avatar1.png'
 import {NavLink, Link} from 'react-router-dom'
 import {BiMenu} from 'react-icons/bi'
@@ -16,6 +16,10 @@ const navLinks = [
   {
     path:'/doctors',
     display:'Doctors'
+  },
+  {
+    path:'/services',
+    display:'Our Services'
   },
 
   
@@ -46,10 +50,10 @@ const toggleMenu = ()=> menuRef.current.classList.toggle('show__menu')
 
   return <header className='header flex items-center' ref={headerRef}>
     <div className="container">
-      <div className='header flex items-center justify-between'>
+      <div className='header flex items-center justify-between '>
         {/*====== logo======*/}
         <div>
-          <img src={logo} className='w-[260px] h-[90px]' alt="" />
+          <img src={logo} className='w-[270px] h-[70px]' alt="" />
         </div>
         {/*==========menu=========*/}
         <div className="navigation" ref={menuRef} onClick={toggleMenu}>
