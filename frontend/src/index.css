@@ -48,6 +48,10 @@
     .doctors{
         @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
     }
+    .faq{
+        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
+    }
+    
 }
 
 

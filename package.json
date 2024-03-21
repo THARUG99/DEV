@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "swiper": "^11.0.7",
     "tailwindcss-animated": "^1.0.1"
   }
 }

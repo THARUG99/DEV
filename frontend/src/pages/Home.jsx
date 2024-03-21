@@ -4,6 +4,7 @@ import vec1 from '../assets/images/vec1.png'
 import vec2 from '../assets/images/vec2.png'
 import vec3 from '../assets/images/vec3.png'
 import feaimg from '../assets/images/feaimg.png'
+import faqimg from '../assets/images/faqimg.png'
 
 
 import { Link } from 'react-router-dom'
@@ -11,6 +12,8 @@ import { BsArrowRight } from 'react-icons/bs'
 import About from '../components/About/About'
 import ServiceList from '../components/Services/ServiceList'
 import DoctorList from '../components/Doctors/DoctorList'
+import FaqList from '../components/Faq/FaqList'
+
 
 const Home = () => {
   return <> 
@@ -222,8 +225,39 @@ const Home = () => {
   {/*--------------------Doctors End---------------------------- */}
 
   {/*--------------------Faq---------------------------- */}
+  <section className='faq'>
+    <div className="container">
+      <div className="flex justify-between gap-[50px] lg:gap-0 ">
+        <div className='w-1/2 hidden md:block'>
+          <img src={faqimg} alt="" />
+        </div>
 
+        <div className='w-full md:w-1/2'>
+         <h2 className='heading'>Frequently Asked Questions </h2>  
+
+         <FaqList />     
+        </div>
+        
+      </div>
+    </div>
+  </section>
   {/*--------------------Faq End---------------------------- */}
+
+  {/*--------------------Testimonial----------------------------
+  <section className='testimonial'>
+    <div className="container">
+      <div className="xl:w-[470px] mx-auto ">
+        <h2 className='heading text-center'>Patients Feedback </h2>
+        <p className='text__para text-center'>
+          World-class care for everyone. Our health system offers unmatched,
+          expert health care.
+        </p>
+      </div>
+
+      
+      </div>
+  </section>
+  --------------------Testimonial End---------------------------- */}
   </>
   
 };
