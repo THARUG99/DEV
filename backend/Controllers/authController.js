@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
 const generateToken = user=>{
-    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_key, {
+    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_KEY, {
         expiresIn: '60d', // expires in 60 days
     }
     )
@@ -13,7 +13,7 @@ const generateToken = user=>{
 
 export const register = async(req,res) => {
 
-    const {name, nicNumber, email, password, photo, gender, role} = req.body
+    const {email, password, name, role, photo, gender} = req.body
 
     try {
 
@@ -38,7 +38,6 @@ export const register = async(req,res) => {
         if(role === 'patient') {
             user = new User({
                 name,
-                nicNumber,
                 email,
                 password:hashPassword,
                 photo,
@@ -49,7 +48,6 @@ export const register = async(req,res) => {
         if(role === 'doctor') {
             user = new Doctor({
                 name,
-                nicNumber,
                 email,
                 password:hashPassword,
                 photo,
@@ -67,7 +65,7 @@ export const register = async(req,res) => {
 
 export const login = async(req,res) => {
 
-    const {email, password} = req.body
+    const { email } = req.body
 
     try {
 
@@ -84,21 +82,21 @@ export const login = async(req,res) => {
         }
         // User existency check
         if(!user)  {
-            return res.status(400).json({message: 'User does not exist'})
+            return res.status(404).json({message: 'User does not exist'})
         }
 
         // check password
-        const isPasswordMatch = await bcrypt.compare(req.body.password, user.password)
+        const isPasswordMatch = await bcrypt.compare( req.body.password, user.password )
 
         if(!isPasswordMatch) {
-            return res.status(400).json({message: 'Invalid password'})
+            return res.status(400).json({status: false, message: 'Invalid password or Email'})
         }
 
         //getting token
         const token = generateToken(user);
 
         const {password, role, appointments, ...rest} = user._doc
-        res.status(400).json({message: 'Successfully Logged in', token, data:{...rest}, role})
+        res.status(200).json({status: true, message: 'Successfully Logged in', token, data:{...rest}, role})
 
 } catch (error) {
     res.status(500).json({success:false, message: 'Error, could not login'})

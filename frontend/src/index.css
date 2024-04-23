@@ -26,31 +26,14 @@
         @apply text-[18px] leading-[30px] font-[400] text-textColor mt-[18px];
     }
 
-    .header{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;  
+    .form__label{
+        @apply text-[16px] font-semibold leading-7 mb-2 text-textColor ;
+    }
+    .form__input{
+        @apply w-full px-4 py-3 border border-solid border-[#0066ff61] focus:outline-none focus:border-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer rounded-md ;
     }
 
-    .hero__section{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .body__sec{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .about__section{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .serve{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .features{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .doctors{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
-    .faq{
-        @apply bg-gradient-to-r from-cyan-100 via-slate-50 to-yellow-50 ;
-    }
+    
     
 }
 

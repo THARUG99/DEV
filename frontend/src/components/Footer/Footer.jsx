@@ -55,11 +55,7 @@ const quickLinks02 = [
   },
   {
     display: 'Ask From Us',
-    path: '/',
-  },
-  {
-    display: 'Request Details ',
-    path: '/patients',
+    path: '/contact',
   },
   {
     display: 'Book an Appointment',

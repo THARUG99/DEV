@@ -9,7 +9,7 @@ export const getAllReviews = async (req, res) => {
     const reviews = await Review.find();
     res.status(200).json({success:true, message: 'Reviews', data: reviews});
   } catch (error) {
-    res.status(500).json({success:false, message: 'No reviews found'});
+    res.status(404).json({success:false, message: 'No reviews found'});
   }
 }
 
