@@ -10,7 +10,7 @@ const uploadImageToCloudinary = async file => {
     uploadData.append('cloud_name', cloud_name);
 
     const res = await fetch(`https://api.cloudinary.com/v1_1/venus69/image/upload`, {
-        method: 'post',
+        method: 'POST',
         body: uploadData
     });
 
