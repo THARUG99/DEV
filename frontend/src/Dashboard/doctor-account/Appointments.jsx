@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import { formatDate } from '../../utils/formatDate'
 
 const Appointments = ({appointments}) => {
   return <table className='w-full text-left text-sm text-gray-500'>
@@ -37,6 +37,8 @@ const Appointments = ({appointments}) => {
                 </div> 
                 )}
             </td>
+            <td className='px-6 py-4'>{item.ticketPrice}</td>
+            <td className='px-6 py-4'>{formatDate(item.createdAt)}</td>
           </tr>
         ))}
     </tbody>
