@@ -34,9 +34,9 @@ const [tab,setTab] = useState('overview')
                   xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100=2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
+                       fillRule="evenodd"
+                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 10 2v-3a1 1 0 00-1-1H9z"
+                       clipRule="evenodd"
                     ></path>
                   </svg>
 
@@ -50,7 +50,7 @@ const [tab,setTab] = useState('overview')
 
                 {tab==='overview' && (<div>
                   <div className='flex items-center gap-4 mb-10'>
-                    <figure className='max-w-[200px] max-h-[200px]'><img src={data?.photo} alt="" className='w-full' /></figure>
+                    <figure className='max-w-[150px] max-h-[150px]'><img src={data?.photo} alt="" className='w-full' /></figure>
                     <div>
                       <span className='bg-[#CCF0F3] text-irisBlueColor py-4 px-4 lg:py-2 lg:px-6 rounded text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold'>
                         {data.specialization}

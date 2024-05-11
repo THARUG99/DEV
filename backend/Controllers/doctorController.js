@@ -4,6 +4,7 @@ import Booking from "../models/BookingSchema.js";
 
 export const updateDoctor = async(req,res)=>{
     const id = req.params.id
+    console.log(id);
 
     try{
         const updatedDoctor = await Doctor.findByIdAndUpdate(id, {$set:req.body}, {new:true});

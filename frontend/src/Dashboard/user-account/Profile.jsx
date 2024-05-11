@@ -1,26 +1,27 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import uploadImageToCloudinary from '../../utils/uploadCloudinary.js'
+import {ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { BASE_URL, token } from '../../config.js'
 import { toast } from 'react-toastify'
-import HashLoader from 'react-spinners/HashLoader.js'
+import HashLoader from 'react-spinners/HashLoader.js';
+import { storage } from '../../utils/firebase.js'
 
 const Profile = ({user}) => {
 
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    photo: null,
+    photo: '',
     gender: '',
-    bloodType: '', // Will be updated with,
-  })
+    bloodType: '',
+  });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     setFormData({
@@ -29,51 +30,93 @@ const Profile = ({user}) => {
       photo: user.photo,
       gender: user.gender,
       bloodType: user.bloodType,
-    })
-  },[user])
+    });
+  }, [user]);
 
   const handleInputChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleFileInputChange = async event => {
-    const file = event.target.files[0]
-     
-      const data = await uploadImageToCloudinary(file)
-      setSelectedFile(file)
-      setFormData({ ...formData, photo: data.url })
-    
-  }
-
-  const submitHandler = async event => {
-    event.preventDefault();
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${BASE_URL}/users/${user._id}`, {
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      })
-      const { message } = await res.json()
-      if (!res.ok) {
-        throw new Error(message)
-      }
-      setLoading(false)
-      toast.success(message)
-      navigate('/users/profile/me')
-    } catch (err) {
-      toast.error(err.message);
-      setLoading(false)
+  const handleFileInputChange = async e => {
+    if (e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
     }
-  }
+  };
 
+  // const submitHandler = async event => {
+  //   event.preventDefault();
+  //   if (!selectedFile) {
+  //     toast.error('Please select an image to upload');
+  //     return;
+  //   }
+
+  //   setLoading(true);
+
+  //   try {
+  //     const storageRef = ref(storage, `images/${selectedFile.name}`);
+  //     await uploadBytes(storageRef, selectedFile);
+  //     const downloadURL = await getDownloadURL(storageRef);
+
+  //     // Update formData with downloadURL immediately after upload
+  //     setFormData(prevFormData => ({ ...prevFormData, photo: "downloadURL" }));
+
+  //     const res = await fetch(`${BASE_URL}/users/${user._id}`, {
+  //       method: 'put',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+  //     const { message } = await res.json();
+  //     if (!res.ok) {
+  //       throw new Error(message);
+  //     }
+  //     setLoading(false);
+  //     toast.success(message);
+  //     navigate('/users/profile/me');
+  //   } catch (err) {
+  //     toast.error(err.message);
+  //     setLoading(false);
+  //   }
+  // };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+        if (selectedFile) {
+            const storageRef = ref(storage, `images/${selectedFile.name}`);
+            await uploadBytes(storageRef, selectedFile);
+            const downloadURL = await getDownloadURL(storageRef);
+
+            // Update formData with downloadURL
+            setFormData({ ...formData, photo: downloadURL });
+        }
+
+        const res = await fetch(`${BASE_URL}/users/${user._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+            throw Error(result.message);
+        }
+
+        toast.success(result.message);
+    } catch (err) {
+        toast.error(err.message);
+    }
+};
+  
   return (
     <div className='mt-10'>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={(e) => submitHandler(e)}>
             <div className="mb-5">
             <input 
             type="text" 

@@ -1,63 +1,82 @@
 import { useState } from 'react'
 import signupImg from '../assets/images/signup1.gif'
 import { Link, useNavigate } from 'react-router-dom'
-import uploadImageToCloudinary from '../utils/uploadCloudinary.js'
 import { BASE_URL } from '../config.js'
 import { toast } from 'react-toastify'
 import HashLoader from 'react-spinners/HashLoader.js'
+import {ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {  storage } from '../utils/firebase.js'
 
 const Signup = () => {
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [previewURL,] = useState("");
-  const [loading, setLoading] = useState(false)
-
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewURL, setPreviewURL] = useState('');
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    photo: '', // Will be updated with Cloudinary URL
+    photo: '', // Initially empty for Realtime Database
     gender: '',
     role: 'patient',
-  })
+  });
 
   const navigate = useNavigate()
 
-  const handleInputChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleFileInputChange = async event => {
-    const file = event.target.files[0]
-    
-      const data = await uploadImageToCloudinary(file)
-      setSelectedFile(file)
-      setFormData({ ...formData, photo: data.url })
-    
-  }
+  const handleFileInputChange = async (e) => {
+    if (e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+      console.log("dsfdsfdsfsfdsfdsfffffffffffffffffffffffffffffffffff ",e.target.files[0]);
 
-  const submitHandler = async event => {
-    event.preventDefault()
-    setLoading(true)
+    }
+  };
+
+  // Combined upload and form submission logic
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      toast.error('Please select an image to upload');
+      return; // Prevent submission if no image is selected
+    }
+
+    setLoading(true);
+
     try {
+      // Firebase Storage Upload
+      const storageRef = ref(storage, `images/${selectedFile.name}`); // Dynamic image path
+      const uploadTask = await uploadBytes(storageRef, selectedFile);
+      const downloadURL = await getDownloadURL(uploadTask.ref);
+
+      // Update form data with download URL
+      setFormData({ ...formData, photo: downloadURL });
+      // Realtime Database write (optional):
+      
+      
+      // Replace with your API call if applicable
       const res = await fetch(`${BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      })
-      const { message } = await res.json()
+      });
+      const { message } = await res.json();
       if (!res.ok) {
-        throw new Error(message)
+        throw new Error(message);
       }
-      setLoading(false)
-      toast.success(message)
-      navigate('/login')
+
+      setLoading(false);
+      toast.success(message);
+      navigate('/home'); // Navigate to home page
     } catch (err) {
-      toast.error(err.message)
-      setLoading(false)
+      toast.error(err.message);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <section className='px-5 xl:px-0'>
@@ -169,7 +188,9 @@ const Signup = () => {
                 onChange={handleFileInputChange}
                 accept='.jpg, .png'
                 className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
+                
                  />
+                 
 
                  <label 
                   htmlFor="customFile" 
@@ -200,7 +221,6 @@ const Signup = () => {
           </p>
 
             </form>
-
           </div>
 
         </div>

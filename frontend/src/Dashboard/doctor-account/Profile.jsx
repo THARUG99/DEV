@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from 'react-icons/ai';
-import uploadImageToCloudinary from '../../utils/uploadCloudinary.js'
 import { BASE_URL, token } from "../../config";
+import {ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { toast} from 'react-toastify'
+import { storage } from '../../utils/firebase.js'
 
 
 const Profile = (doctorData) => {
 
+const [selectedFile, setSelectedFile] = useState(null)
 const [formData, setFormData] = useState({
     name:'',
     email:'',
@@ -20,10 +22,12 @@ const [formData, setFormData] = useState({
     experiences:[],
     timeSlots:[],
     about: "",
-    photo: null
+    photo: ''
  });
 
  useEffect(() => {
+    console.log(doctorData);
+    console.log(doctorData.doctorData._id);
     setFormData({
         name: doctorData?.name,
         email: doctorData?.email,
@@ -44,44 +48,58 @@ const [formData, setFormData] = useState({
     setFormData({...formData, [e.target.name]: e.target.value });
  }
 
-    const handleFileInputChange = async event => {
-        const file = event.target.files[0];
-        const data = await uploadImageToCloudinary(file);
-        console.log(data);
-        setFormData({...formData, photo:data?.url});
+    const handleFileInputChange = async e => {
+        if (e.target.files[0]) {
+
+            setSelectedFile(e.target.files[0]);
+            
+          }
+        // const file = event.target.files[0];
+        
+      
     };
 
-    const updateProfileHandler = async e => {
+    const submitHandler = async (e, doctorId) => {
+        console.log(doctorId);
         e.preventDefault();
-
         try {
-          const res = await fetch(`${BASE_URL}/doctors/${doctorData._id}`,{
-            method:'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
-    })
-
-    const result = await res.json()
-
-     if(!res.ok){
-         throw Error(result.message)
-     }
-
-     toast.success(result.message)  
+            if (selectedFile) {
+                const storageRef = ref(storage, `images/${selectedFile.name}`);
+                await uploadBytes(storageRef, selectedFile);
+                const downloadURL = await getDownloadURL(storageRef);
+    
+                // Update formData with downloadURL
+                setFormData({ ...formData, photo: downloadURL });
+            }
+    
+            const res = await fetch(`${BASE_URL}/doctors/${doctorId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+    
+            const result = await res.json();
+    
+            if (!res.ok) {
+                throw Error(result.message);
+            }
+    
+            toast.success(result.message);
         } catch (err) {
-           toast.error(err.message) 
+            toast.error(err.message);
         }
-
-        console.log(formData);
     };
 
 
         // reusable function to handle adding items
     const addItem= (key,item)=>{
-        setFormData(prevFormData=>({...prevFormData, [key]: [...prevFormData[key], item]}));
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [key]: Array.isArray(prevFormData[key]) ? [...prevFormData[key], item] : [item]
+          }));
     };
 
         // reusable function to handle inputs changing
@@ -101,8 +119,10 @@ const [formData, setFormData] = useState({
 
         // reusable function to handle deleting items
     const deleteItem = (key, index) => {
-        setFormData(prevFormData => ({...prevFormData,[key]: prevFormData[key].filter((_, i) => i !== index)
-        }));
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [key]: Array.isArray(prevFormData[key]) ? prevFormData[key].filter((_, i) => i !== index) : prevFormData[key]
+          }));
     }
 
 
@@ -111,8 +131,8 @@ const [formData, setFormData] = useState({
         addItem('qualifications',{
             startingDate: "",
             endingDate: "",
-            degree: "PhD",
-            university: "University of Canada West",
+            degree: "",
+            university: "",
         });
     };
 
@@ -130,8 +150,8 @@ const [formData, setFormData] = useState({
         addItem('experiences',{
             startingDate: "", 
             endingDate: "", 
-            position: "GEneral Anesthesia", 
-            hospital: "Karapitiya Teaching Hospital",
+            position: "", 
+            hospital: "",
         });
     };
 
@@ -147,8 +167,8 @@ const [formData, setFormData] = useState({
     const addTimeSlot = e => {
         e.preventDefault();
         addItem('timeSlots',{
-            day: "Sunday", 
-            startingTime: "10:00", 
+            day: "", 
+            startingTime: "", 
             endingTime: "04:30"
         });
     };
@@ -165,7 +185,7 @@ const [formData, setFormData] = useState({
   return ( <div>
     <h2 className="text-headingColor font-bold text-[24px] leading-9 mb-10 ">Profile Info</h2>
 
-   <form>
+   <form onSubmit={(e) => submitHandler(e, doctorData.doctorData._id)}>
     <div className="mb-5">
         <p className="form__label">Name*</p>
         <input 
@@ -212,6 +232,7 @@ const [formData, setFormData] = useState({
         placeholder="Bio"  
         className="form__input"
         maxLength={100}
+        rows='4'
         />
     </div>
     
@@ -406,8 +427,9 @@ const [formData, setFormData] = useState({
                     <select 
                     name="day" 
                     value={item.day} 
-                    className="form__input py-3.5">
-                    onChange={e => handleTimeSlotChange(e, index)}
+                    className="form__input py-3.5"
+                    onChange={e => handleTimeSlotChange(e, index)}>
+                    
 
                         <option value="">Select</option>
                         <option value="saturday">Saturday</option>
@@ -493,14 +515,15 @@ const [formData, setFormData] = useState({
                   className='absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] 
                   text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold 
                   rounded-lg truncate cursor-pointer '>
-                    Upload Photo
+                    {selectedFile ? selectedFile.name : 'Upload Photo'}
                  </label>
 
               </div>
 
         </div>
         <div className="mt-7">
-            <button type="submit" onClick={updateProfileHandler} className="bg-primaryColor py-3 px-4 text-white text-[18px] w-full rounded-lg">
+            <button type="submit"
+             className="bg-primaryColor py-3 px-4 text-white text-[18px] w-full rounded-lg">
                 Update Profile
             </button>
         </div>

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useReducer} from 'react';
+import { createContext,  useEffect, useReducer} from 'react';
 
 
 const initialState = {
     user: localStorage.getItem('user') != undefined ? JSON.parse(localStorage.getItem('user')) : null,
-    token: localStorage.getItem('role') || null,
-    role: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
+    role: localStorage.getItem('role') || null
 }
 
 export const authContext = createContext(initialState);
@@ -51,9 +51,6 @@ export const AuthContextProvider = ({children}) => {
         localStorage.setItem('user', JSON.stringify(state.user))
         localStorage.setItem('role', state.role)
         localStorage.setItem('token', state.token)
-        
-        
-        
 
     },[state])
 
@@ -61,8 +58,8 @@ export const AuthContextProvider = ({children}) => {
     <authContext.Provider 
     value={{
         user:state.user,   
-        token:state.token,
         role:state.role, 
+        token:state.token,
          
         dispatch,
         }}
