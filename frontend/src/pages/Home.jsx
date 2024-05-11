@@ -32,8 +32,9 @@ const Home = () => {
               <p className='text__para'>
               Electronic Health Record (EHR) software systems provide numerous advantages over paper-based record-keeping in healthcare settings.
               </p>
-
+              <Link to='/doctors'>
               <button className='btn'>Request an Appointment</button>
+              </Link>
           </div>
 
           {/*----------------- Hero Counter------------------- */}
