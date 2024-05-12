@@ -85,14 +85,13 @@ export const getSingleUser = async(req,res)=>{
  }
 
  export const getMyAppoinments = async(req,res) => {
-
+        console.log(req.userId);
     try {
 
         // Get the current user appoinments
 
-        const bookings = await BookingSchema.find({user:req.userId})
-
-        // get doctor id from appoinments
+        const bookings = await Booking.find({user:req.userId})
+        console.log(bookings);        // get doctor id from appoinments
 
         const doctorIds = bookings.map(el => el.doctor.id)
 

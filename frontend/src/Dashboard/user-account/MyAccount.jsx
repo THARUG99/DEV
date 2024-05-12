@@ -4,11 +4,12 @@ import { authContext } from '../../context/AuthContext'
 import MyBookings from './MyBookings'
 import Profile from './Profile'
 
-import useGetProfile from '../../hooks/useFetchData'
+
 import { BASE_URL } from '../../config.js'
 
 import Loading from '../../components/Loader/Loading.jsx'
 import Error from '../../components/Error/Error.jsx'
+import useFetchData from '../../hooks/useFetchData.jsx'
 
 
 const MyAccount = () => {
@@ -16,7 +17,7 @@ const MyAccount = () => {
   const { dispatch } = useContext(authContext)
   const [tab, setTab] = useState('bookings')
 
-  const {data:userData, loading, error} = useGetProfile(`${BASE_URL}/users/profile/me`)
+  const {data:userData, loading, error} = useFetchData(`${BASE_URL}/users/profile/me`)
 
   console.log(userData, 'userdata');
 

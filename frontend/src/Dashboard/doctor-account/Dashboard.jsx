@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Loader from '../../components/Loader/Loading'
 import Error from '../../components/Error/Error'
-import useGetProfile from '../../hooks/useFetchData'
+import useFetchData from '../../hooks/useFetchData'
 import { BASE_URL } from '../../config'
 import Tabs from './Tabs'
 import starIcon from '../../assets/images/Star.png'
@@ -11,7 +11,7 @@ import Appointments from './Appointments'
 
 const Dashboard = () => {
 
-const {data, loading, error} = useGetProfile(`${BASE_URL}/doctors/profile/me`);
+const {data, loading, error} = useFetchData(`${BASE_URL}/doctors/profile/me`);
 const [tab,setTab] = useState('overview')
 
   return <section>

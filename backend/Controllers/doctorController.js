@@ -81,18 +81,17 @@ export const getSingleDoctor = async(req,res)=>{
 
 export const getDoctorProfile = async(req, res) => {
     const doctorId = req.userId
-
+    console.log(doctorId);
     try{
         const doctor = await Doctor.findById(doctorId,)
-
+        console.log(doctor);
         if(!doctor){
             return res.status(404).json({success:false, message:'Doctor not found'});
         }
 
         const {password, ...rest} = doctor._doc 
-        const appoinments = await Booking.find({doctor:doctorId})
-
-        res.status(200).json({success:true, message:'User Found!!', data:{...rest, appoinments}})
+        const appointments = await Booking.find({doctor:doctorId})
+        res.status(200).json({success:true, message:'User Found!!', data:{...rest, appointments: appointments}})
 
     }catch(error){
         res.status(500).json({success:false, message:'Something Went wrong'});
